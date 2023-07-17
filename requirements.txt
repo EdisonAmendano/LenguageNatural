@@ -79,7 +79,6 @@ tzdata==2023.3
 uritemplate==4.1.1
 urllib3==2.0.2
 uvicorn==0.14.0
-vboxapi==1.0
 Wand==0.6.11
 Werkzeug==2.3.3
 wrapt==1.14.1
