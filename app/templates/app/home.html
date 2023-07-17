@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #333333;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;  /* Añade esto para organizar los elementos hijos en una columna */
+        }
+
+        .container {
+            width: 400px;
+            padding: 40px;
+            background-color: #222222;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #555555;
+            background-color: #444444;
+            color: #FFFFFF;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #FF6B6B;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #FF4F4F;
+        }
+        .aa {
+            color: #FFFFFF;  /* Añade esto para hacer el texto de la tabla blanco */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido(a)</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="comentario">Ingrese su Busqueda:</label>
+                <input type="text" id="comentario" name="Texto">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="PREDECIR">
+            </div>
+        </form>
+    </div>
+    <div class="aa">
+        {{ df_html|safe }}
+    </div>
+</body>
+</html>
+
+
