@@ -1,4 +1,5 @@
-﻿absl-py==1.4.0
+pandas==2.0.1
+absl-py==1.4.0
 Django==3.2.10
 django-cors-headers==3.14.0
 djangorestframework==3.14.0
