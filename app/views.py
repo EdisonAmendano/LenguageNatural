@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from app import models
+from django.http import JsonResponse
+
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -20,21 +22,30 @@ from keras_preprocessing.sequence import pad_sequences
 from keras.models import Sequential
 from keras.layers import SimpleRNN, Dense
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 @api_view(['GET', 'POST'])
 def home(request):
     try:
         df_html = ""
         if request.method == 'POST':
+            # Verificar si la solicitud es AJAX
+            is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+            
             # Formato de datos de entrada
             TEXTO = str(request.POST.get('Texto'))
             pred = predecir(TEXTO)
-            print(pred.columns)
             df_html = pred[['title', 'link']].to_html()
-    except Exception as e:
-        print(f"Error: {e}")  # Imprimir el error para depuración
-        df_html = 'Datos inválidos'
-    return render(request, "app/home.html",{'df_html': df_html})
 
+            if is_ajax:
+                return JsonResponse({'df_html': df_html})
+    # Se genera un error, solo para las solicitudes AJAX
+    except Exception as e:
+            if is_ajax:
+                return JsonResponse({'error': str(e)}, status=400)  # retorna un error con status 400
+    # La solicitud no es AJAX, renderizar la plantilla normalmente
+    return render(request, "app/home.html", {'df_html': df_html})
 
 def get_pdf_links(query, limit):
     n = 0

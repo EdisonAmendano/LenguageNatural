@@ -65,11 +65,33 @@
             color: #FFFFFF;  /* Añade esto para hacer el texto de la tabla blanco */
         }
     </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('form').on('submit', function(event) {
+            event.preventDefault();  // Prevenir la recarga de la página
+            $.ajax({
+                url: '/',  // la URL de tu vista de Django
+                method: 'POST',
+                data: {
+                    Texto: $('#comentario').val(),  // Envía el valor del campo de texto
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),  // CSRF token
+                },
+                success: function(data) {
+                    // Si la respuesta es exitosa, actualiza el div con la nueva tabla
+                    $('.aa').html(data.df_html);
+                }
+            });
+        });
+    });
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Bienvenido(a)</h1>
         <form method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="comentario">Ingrese su Busqueda:</label>
                 <input type="text" id="comentario" name="Texto">
@@ -84,5 +106,3 @@
     </div>
 </body>
 </html>
-
-
