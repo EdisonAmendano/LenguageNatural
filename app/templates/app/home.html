@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
         body {
             background-color: #333333;
@@ -9,7 +10,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;  /* Añade esto para organizar los elementos hijos en una columna */
+            flex-direction: column;
         }
 
         .container {
@@ -62,36 +63,43 @@
             background-color: #FF4F4F;
         }
         .aa {
-            color: #FFFFFF;  /* Añade esto para hacer el texto de la tabla blanco */
+            color: #FFFFFF;
         }
     </style>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-    $(document).ready(function(){
-        $('form').on('submit', function(event) {
-            event.preventDefault();  // Prevenir la recarga de la página
-            $.ajax({
-                url: '/',  // la URL de tu vista de Django
-                method: 'POST',
-                data: {
-                    Texto: $('#comentario').val(),  // Envía el valor del campo de texto
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),  // CSRF token
-                },
-                success: function(data) {
-                    // Si la respuesta es exitosa, actualiza el div con la nueva tabla
-                    $('.aa').html(data.df_html);
-                }
+        $(document).ready(function(){
+            $("#form-predecir").on('submit', function(e) {
+                e.preventDefault();
+
+                $("#loading").show();  // Muestra el indicador de carga
+
+                $.ajax({
+                    type: "POST",
+                    url: '/',
+                    data: {
+                        Texto: $("#comentario").val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function(data) {
+                        $('.aa').html(data.df_html);
+
+                        $("#loading").hide();  // Oculta el indicador de carga
+                    },
+                    error: function(error) {
+                        console.log(error);
+
+                        $("#loading").hide();  // Oculta el indicador de carga
+                    }
+                });
             });
         });
-    });
     </script>
 </head>
 <body>
     <div class="container">
         <h1>Bienvenido(a)</h1>
-        <form method="post">
-            {% csrf_token %}
+        <form id="form-predecir" method="post">
             <div class="form-group">
                 <label for="comentario">Ingrese su Busqueda:</label>
                 <input type="text" id="comentario" name="Texto">
@@ -100,9 +108,14 @@
                 <input type="submit" value="PREDECIR">
             </div>
         </form>
+        <div id="loading" style="display: none;">
+            <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Cargando...</span>
+            </div>
+        </div>
     </div>
     <div class="aa">
-        {{ df_html|safe }}
+        {{ df_html }}
     </div>
 </body>
 </html>
